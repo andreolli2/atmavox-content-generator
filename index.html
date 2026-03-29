@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATMAVOX — Gerador de Carrossel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Jost:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ===== RESET & BASE ===== */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        /* Paleta Atmavox */
+        --preto-portal: #0a0a0a;
+        --ambar-chama: #c9831a;
+        --branco-quente: #f5efe6;
+        --cinza-nevoa: #2c2c2c;
+        --dourado-sutil: #d4a853;
+        --vinho-ancoragem: #5c1f2e;
+        --nude-presenca: #c4a882;
+        --ambar-light: rgba(201, 131, 26, 0.15);
+        --ambar-border: rgba(201, 131, 26, 0.25);
+        --white-05: rgba(255, 255, 255, 0.05);
+        --white-08: rgba(255, 255, 255, 0.08);
+        --white-15: rgba(255, 255, 255, 0.15);
+        --white-30: rgba(255, 255, 255, 0.3);
+        --white-50: rgba(255, 255, 255, 0.5);
+
+        --font-headline: "Playfair Display", Georgia, serif;
+        --font-body: "Jost", system-ui, sans-serif;
+      }
+
+      body {
+        background: #080808;
+        font-family: var(--font-body);
+        color: var(--branco-quente);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ===== LAYOUT PRINCIPAL ===== */
+      .app {
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        min-height: 100vh;
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        background: #0e0e0e;
+        border-right: 1px solid var(--ambar-border);
+        padding: 28px 24px 40px;
+        overflow-y: auto;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        scrollbar-width: thin;
+        scrollbar-color: var(--cinza-nevoa) transparent;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .sidebar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--cinza-nevoa);
+        border-radius: 2px;
+      }
+
+      /* Logo / Header da Sidebar */
+      .sidebar-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+
+      .logo-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1.5px solid var(--ambar-chama);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .logo-mark svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .sidebar-logo h1 {
+        font-family: var(--font-headline);
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--branco-quente);
+      }
+
+      .sidebar .subtitle {
+        font-size: 12px;
+        color: var(--white-30);
+        margin-bottom: 28px;
+        line-height: 1.6;
+        padding-left: 38px;
+        font-weight: 300;
+        letter-spacing: 0.2px;
+      }
+
+      /* Divisor decorativo */
+      .sidebar-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          var(--ambar-border) 0%,
+          transparent 100%
+        );
+        margin: 0 0 24px 0;
+      }
+
+      /* Section title */
+      .section-title {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--ambar-chama);
+        margin-bottom: 14px;
+        margin-top: 26px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .section-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--ambar-border);
+      }
+
+      .section-title:first-of-type {
+        margin-top: 0;
+      }
+
+      /* Fields */
+      .field {
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--white-50);
+        margin-bottom: 6px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      .field input[type="text"],
+      .field select,
+      .field textarea {
+        width: 100%;
+        background: var(--white-05);
+        border: 1px solid var(--white-08);
+        border-radius: 6px;
+        padding: 9px 12px;
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: var(--branco-quente);
+        outline: none;
+        transition: border-color 0.2s, background 0.2s;
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: var(--ambar-border);
+        background: rgba(201, 131, 26, 0.04);
+      }
+
+      .field textarea {
+        resize: vertical;
+        min-height: 80px;
+        line-height: 1.6;
+      }
+
+      .field select {
+        cursor: pointer;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23C9831A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 32px;
+        background-color: var(--white-05);
+      }
+
+      .field select option {
+        background: #1a1a1a;
+        color: var(--branco-quente);
+      }
+
+      /* Color row */
+      .color-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .color-row input[type="color"] {
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--white-08);
+        border-radius: 6px;
+        cursor: pointer;
+        background: transparent;
+        padding: 2px;
+        flex-shrink: 0;
+      }
+      .color-row input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 2px;
+      }
+      .color-row input[type="color"]::-webkit-color-swatch {
+        border-radius: 3px;
+        border: none;
+      }
+      .color-row input[type="text"] {
+        flex: 1;
+      }
+
+      /* Photo upload */
+      .photo-upload {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .photo-preview {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--white-05);
+        border: 1.5px dashed var(--ambar-border);
+        overflow: hidden;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+      .photo-preview:hover {
+        border-color: var(--ambar-chama);
+      }
+      .photo-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .photo-preview .placeholder {
+        font-size: 18px;
+        color: var(--ambar-chama);
+        opacity: 0.6;
+      }
+      .photo-upload input[type="file"] {
+        display: none;
+      }
+      .photo-hint {
+        font-size: 11px;
+        color: var(--white-30);
+        line-height: 1.5;
+      }
+
+      /* Style Tabs */
+      .style-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
+        margin-bottom: 18px;
+      }
+
+      .style-tab {
+        padding: 10px 8px;
+        border-radius: 6px;
+        border: 1px solid var(--white-08);
+        background: transparent;
+        color: var(--white-30);
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s;
+        line-height: 1.4;
+        letter-spacing: 0.3px;
+      }
+      .style-tab:hover {
+        border-color: var(--ambar-border);
+        color: var(--white-50);
+      }
+      .style-tab.active {
+        background: var(--ambar-light);
+        border-color: var(--ambar-chama);
+        color: var(--ambar-chama);
+      }
+      .style-tab small {
+        display: block;
+        font-size: 9px;
+        opacity: 0.5;
+        margin-top: 3px;
+        font-weight: 400;
+      }
+
+      /* Slide Blocks */
+      .slide-block {
+        background: var(--white-05);
+        border: 1px solid var(--white-08);
+        border-radius: 8px;
+        padding: 14px;
+        margin-bottom: 10px;
+        transition: border-color 0.2s;
+      }
+      .slide-block:hover {
+        border-color: var(--ambar-border);
+      }
+
+      .slide-block .sb-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .sb-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--ambar-chama);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+      }
+
+      .sb-remove {
+        background: none;
+        border: none;
+        color: var(--white-30);
+        cursor: pointer;
+        font-size: 16px;
+        padding: 0 2px;
+        line-height: 1;
+        transition: color 0.2s;
+      }
+      .sb-remove:hover {
+        color: var(--branco-quente);
+      }
+
+      .slide-block textarea {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--white-08);
+        border-radius: 5px;
+        padding: 9px 11px;
+        font-family: var(--font-body);
+        font-size: 12.5px;
+        color: var(--branco-quente);
+        outline: none;
+        resize: vertical;
+        min-height: 68px;
+        line-height: 1.55;
+        transition: border-color 0.2s;
+      }
+      .slide-block textarea:focus {
+        border-color: var(--ambar-border);
+      }
+
+      .sb-photo-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .sb-photo-thumb {
+        width: 48px;
+        height: 48px;
+        border-radius: 6px;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px dashed var(--white-15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+      .sb-photo-thumb:hover {
+        border-color: var(--ambar-border);
+      }
+      .sb-photo-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+      .sb-plus {
+        font-size: 16px;
+        color: var(--white-30);
+      }
+      .sb-photo-hint {
+        font-size: 11px;
+        color: var(--white-30);
+      }
+      .slide-block input[type="file"] {
+        display: none;
+      }
+
+      /* Buttons */
+      .btn-add-slide {
+        width: 100%;
+        padding: 9px;
+        border-radius: 6px;
+        border: 1px dashed var(--ambar-border);
+        background: transparent;
+        color: var(--ambar-chama);
+        font-family: var(--font-body);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+      }
+      .btn-add-slide:hover {
+        background: var(--ambar-light);
+      }
+
+      .btn-generate {
+        width: 100%;
+        padding: 13px;
+        border-radius: 8px;
+        border: none;
+        background: var(--ambar-chama);
+        color: var(--preto-portal);
+        font-family: var(--font-body);
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 22px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-generate::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.15) 0%,
+          transparent 50%
+        );
+        pointer-events: none;
+      }
+      .btn-generate:hover {
+        background: #d98f2a;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 20px rgba(201, 131, 26, 0.35);
+      }
+      .btn-generate:active {
+        transform: translateY(0);
+      }
+
+      .btn-export {
+        width: 100%;
+        padding: 11px;
+        border-radius: 8px;
+        border: 1px solid var(--ambar-border);
+        background: transparent;
+        color: var(--nude-presenca);
+        font-family: var(--font-body);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 8px;
+        letter-spacing: 0.5px;
+        display: none;
+      }
+      .btn-export:hover {
+        border-color: var(--ambar-chama);
+        color: var(--branco-quente);
+        background: var(--ambar-light);
+      }
+
+      /* Hint box */
+      .hint-box {
+        background: rgba(201, 131, 26, 0.04);
+        border: 1px solid var(--ambar-border);
+        border-radius: 6px;
+        padding: 12px 14px;
+        margin-top: 14px;
+        font-size: 11.5px;
+        color: var(--white-30);
+        line-height: 1.6;
+      }
+      .hint-box strong {
+        color: var(--ambar-chama);
+      }
+      .hint-box code {
+        background: var(--white-08);
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-size: 10.5px;
+        color: var(--nude-presenca);
+      }
+
+      /* Template presets */
+      .preset-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+
+      .preset-btn {
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--white-08);
+        background: var(--white-05);
+        color: var(--white-50);
+        font-family: var(--font-body);
+        font-size: 10.5px;
+        font-weight: 500;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.2s;
+        line-height: 1.4;
+      }
+      .preset-btn:hover {
+        border-color: var(--ambar-border);
+        color: var(--branco-quente);
+        background: var(--ambar-light);
+      }
+      .preset-btn span {
+        display: block;
+        font-size: 9px;
+        color: var(--white-30);
+        margin-top: 2px;
+        font-weight: 400;
+      }
+
+      /* ===== MAIN AREA ===== */
+      .main {
+        padding: 36px 40px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        min-height: 100vh;
+        background: #060606;
+      }
+
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;
+        color: var(--white-30);
+        text-align: center;
+        gap: 14px;
+      }
+
+      .empty-state .es-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        border: 1.5px solid var(--ambar-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 6px;
+        opacity: 0.5;
+      }
+
+      .empty-state h3 {
+        font-family: var(--font-headline);
+        font-size: 18px;
+        font-weight: 400;
+        color: var(--white-50);
+        font-style: italic;
+      }
+
+      .empty-state p {
+        font-size: 13px;
+        line-height: 1.7;
+        max-width: 280px;
+        color: var(--white-30);
+        font-weight: 300;
+      }
+
+      .slide-label-tag {
+        font-size: 10px;
+        color: var(--ambar-chama);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        text-align: center;
+        font-weight: 500;
+      }
+
+      .slide-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      /* ===== PREVIEW SCALE ===== */
+      .preview-slide {
+        transform: scale(0.42);
+        transform-origin: top center;
+        margin-bottom: calc(-1080px * 0.58);
+      }
+
+      /* ===== ATMAVOX SLIDE (1080x1080) ===== */
+      .atma-slide {
+        width: 1080px;
+        height: 1080px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Marca d'água da marca */
+      .atma-brand-tag {
+        position: absolute;
+        top: 36px;
+        right: 44px;
+        font-family: var(--font-body);
+        font-size: 16px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        opacity: 0.2;
+        font-weight: 400;
+      }
+
+      /* Numeração */
+      .atma-counter {
+        position: absolute;
+        bottom: 36px;
+        right: 44px;
+        font-family: var(--font-body);
+        font-size: 14px;
+        letter-spacing: 2px;
+        opacity: 0.18;
+        font-weight: 300;
+      }
+
+      /* Linha ornamental lateral */
+      .atma-line-left {
+        position: absolute;
+        left: 54px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(
+          180deg,
+          transparent 5%,
+          rgba(201, 131, 26, 0.3) 30%,
+          rgba(201, 131, 26, 0.3) 70%,
+          transparent 95%
+        );
+      }
+
+      /* ===== SLIDE: CAPA ===== */
+      .atma-slide.is-cover {
+        padding: 90px 110px 80px 90px;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .is-cover .cover-top {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .is-cover .cover-tag {
+        font-family: var(--font-body);
+        font-size: 13px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        margin-bottom: 32px;
+        font-weight: 400;
+      }
+
+      .is-cover .cover-headline {
+        font-family: var(--font-headline);
+        font-size: 78px;
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -1px;
+      }
+
+      .is-cover .cover-sub {
+        margin-top: 24px;
+        font-family: var(--font-body);
+        font-size: 22px;
+        line-height: 1.5;
+        font-weight: 300;
+        opacity: 0.55;
+        max-width: 680px;
+      }
+
+      .is-cover .cover-footer {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .is-cover .avatar-circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        border: 1.5px solid;
+        overflow: hidden;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        font-weight: 700;
+        font-family: var(--font-body);
+      }
+
+      .is-cover .cover-name-block {
+        line-height: 1.3;
+      }
+      .is-cover .cover-name {
+        font-family: var(--font-body);
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .is-cover .cover-handle {
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 300;
+        opacity: 0.4;
+        letter-spacing: 0.5px;
+      }
+
+      .is-cover .swipe-hint {
+        font-family: var(--font-body);
+        font-size: 14px;
+        letter-spacing: 3px;
+        opacity: 0.2;
+        text-transform: uppercase;
+        font-weight: 400;
+      }
+
+      /* Decorative ember dot */
+      .cover-amber-dot {
+        position: absolute;
+        bottom: 80px;
+        left: 90px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--ambar-chama);
+        opacity: 0.6;
+      }
+
+      /* ===== SLIDE: CONTEÚDO ===== */
+      .atma-slide.is-content {
+        padding: 70px 100px 80px 90px;
+        justify-content: space-between;
+      }
+
+      .is-content .content-top {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .content-slide-num {
+        font-family: var(--font-body);
+        font-size: 12px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        opacity: 0.2;
+        margin-bottom: 40px;
+        font-weight: 400;
+      }
+
+      .content-body {
+        font-family: var(--font-headline);
+        font-size: 52px;
+        line-height: 1.3;
+        font-weight: 400;
+        font-style: italic;
+        letter-spacing: -0.3px;
+      }
+
+      .content-body.no-photo {
+        font-size: 58px;
+      }
+
+      .content-photo {
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        flex-shrink: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin-top: 40px;
+      }
+
+      .content-footer {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-top: 50px;
+        padding-top: 32px;
+        border-top: 1px solid;
+        flex-shrink: 0;
+      }
+
+      .content-footer .mini-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        overflow: hidden;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        font-family: var(--font-body);
+      }
+
+      .content-footer .mini-name {
+        font-family: var(--font-body);
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .content-footer .mini-handle {
+        font-family: var(--font-body);
+        font-size: 15px;
+        font-weight: 300;
+        opacity: 0.35;
+      }
+
+      /* ===== SLIDE: CTA ===== */
+      .atma-slide.is-cta {
+        padding: 90px 100px 80px 90px;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .is-cta .cta-label {
+        font-family: var(--font-body);
+        font-size: 11px;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        opacity: 0.25;
+        margin-bottom: 24px;
+        font-weight: 500;
+      }
+
+      .is-cta .cta-headline {
+        font-family: var(--font-headline);
+        font-size: 68px;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+        margin-bottom: 40px;
+      }
+
+      .is-cta .cta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 30px;
+        border-radius: 100px;
+        border: 1.5px solid;
+        font-family: var(--font-body);
+        font-size: 18px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+      }
+
+      .is-cta .cta-footer-info {
+        position: absolute;
+        bottom: 80px;
+        left: 90px;
+        font-family: var(--font-body);
+        font-size: 15px;
+        opacity: 0.25;
+        font-weight: 300;
+        letter-spacing: 1px;
+      }
+
+      /* ===== SLIDE ESTILO: CITAÇÃO ===== */
+      .atma-slide.is-quote {
+        padding: 90px 100px;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      .is-quote .quote-mark {
+        font-family: var(--font-headline);
+        font-size: 140px;
+        line-height: 0.7;
+        margin-bottom: 20px;
+        opacity: 0.15;
+      }
+
+      .is-quote .quote-text {
+        font-family: var(--font-headline);
+        font-size: 62px;
+        line-height: 1.2;
+        font-weight: 400;
+        font-style: italic;
+        margin-bottom: 40px;
+        max-width: 860px;
+      }
+
+      .is-quote .quote-attr {
+        font-family: var(--font-body);
+        font-size: 16px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-weight: 400;
+        opacity: 0.35;
+      }
+
+      /* ===== SLIDE ESTILO: LISTA ===== */
+      .atma-slide.is-list {
+        padding: 70px 100px 80px 90px;
+        justify-content: center;
+      }
+
+      .is-list .list-title {
+        font-family: var(--font-headline);
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 50px;
+        max-width: 800px;
+      }
+
+      .is-list .list-items {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .list-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 22px;
+        padding: 22px 0;
+        border-bottom: 1px solid;
+      }
+
+      .list-item:first-child {
+        border-top: 1px solid;
+      }
+
+      .list-item-num {
+        font-family: var(--font-headline);
+        font-size: 20px;
+        font-weight: 400;
+        font-style: italic;
+        opacity: 0.2;
+        flex-shrink: 0;
+        min-width: 30px;
+        padding-top: 2px;
+      }
+
+      .list-item-text {
+        font-family: var(--font-body);
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 1.4;
+      }
+
+      /* ===== RESPONSIVO ===== */
+      @media (max-width: 1100px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          position: relative;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--ambar-border);
+          max-height: none;
+        }
+        .main {
+          padding: 24px 16px;
+        }
+        .preview-slide {
+          transform: scale(0.28);
+          margin-bottom: calc(-1080px * 0.72);
+        }
+      }
+
+      /* ===== SCROLLBAR MAIN ===== */
+      .main::-webkit-scrollbar {
+        width: 4px;
+      }
+      .main::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .main::-webkit-scrollbar-thumb {
+        background: var(--cinza-nevoa);
+        border-radius: 2px;
+      }
+
+      /* Animação de entrada dos slides */
+      .slide-wrapper {
+        animation: slideIn 0.3s ease forwards;
+        opacity: 0;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .slide-wrapper:nth-child(1) {
+        animation-delay: 0ms;
+      }
+      .slide-wrapper:nth-child(2) {
+        animation-delay: 60ms;
+      }
+      .slide-wrapper:nth-child(3) {
+        animation-delay: 120ms;
+      }
+      .slide-wrapper:nth-child(4) {
+        animation-delay: 180ms;
+      }
+      .slide-wrapper:nth-child(5) {
+        animation-delay: 240ms;
+      }
+      .slide-wrapper:nth-child(6) {
+        animation-delay: 300ms;
+      }
+      .slide-wrapper:nth-child(7) {
+        animation-delay: 360ms;
+      }
+      .slide-wrapper:nth-child(8) {
+        animation-delay: 420ms;
+      }
+      .slide-wrapper:nth-child(9) {
+        animation-delay: 480ms;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <div class="logo-mark">
+            <svg
+              viewBox="0 0 14 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="7" cy="7" r="5.5" stroke="#C9831A" stroke-width="1" />
+              <circle cx="7" cy="7" r="2" fill="#C9831A" opacity="0.7" />
+            </svg>
+          </div>
+          <h1>Atmavox</h1>
+        </div>
+        <p class="subtitle">gerador de carrossel · ativadora de consciências</p>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- IDENTIDADE -->
+        <p class="section-title">identidade visual</p>
+
+        <div class="field">
+          <label>nome / marca</label>
+          <input
+            type="text"
+            id="brandName"
+            value="Atmavox"
+            placeholder="ex: Atmavox"
+          />
+        </div>
+
+        <div class="field">
+          <label>@ instagram / tiktok</label>
+          <input
+            type="text"
+            id="brandHandle"
+            value="@atmavox"
+            placeholder="ex: @atmavox"
+          />
+        </div>
+
+        <div class="field">
+          <label>foto de perfil / logo</label>
+          <div class="photo-upload">
+            <div
+              class="photo-preview"
+              onclick="document.getElementById('photoInput').click()"
+            >
+              <span class="placeholder" id="photoPlaceholder">✦</span>
+              <img id="photoPreviewImg" style="display: none" alt="" />
+            </div>
+            <div class="photo-hint">
+              clique para enviar<br />jpg, png ou webp
+            </div>
+            <input
+              type="file"
+              id="photoInput"
+              accept="image/*"
+              onchange="handlePhoto(this)"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>cor de fundo</label>
+          <div class="color-row">
+            <input
+              type="color"
+              id="colorBg"
+              value="#0A0A0A"
+              onchange="document.getElementById('colorBgHex').value=this.value"
+            />
+            <input
+              type="text"
+              id="colorBgHex"
+              value="#0A0A0A"
+              maxlength="7"
+              oninput="syncColor('colorBg',this.value)"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>cor do texto</label>
+          <div class="color-row">
+            <input
+              type="color"
+              id="colorText"
+              value="#F5EFE6"
+              onchange="document.getElementById('colorTextHex').value=this.value"
+            />
+            <input
+              type="text"
+              id="colorTextHex"
+              value="#F5EFE6"
+              maxlength="7"
+              oninput="syncColor('colorText',this.value)"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>cor de destaque (âmbar)</label>
+          <div class="color-row">
+            <input
+              type="color"
+              id="colorAccent"
+              value="#C9831A"
+              onchange="document.getElementById('colorAccentHex').value=this.value"
+            />
+            <input
+              type="text"
+              id="colorAccentHex"
+              value="#C9831A"
+              maxlength="7"
+              oninput="syncColor('colorAccent',this.value)"
+            />
+          </div>
+        </div>
+
+        <!-- ESTILO -->
+        <p class="section-title">layout do slide</p>
+
+        <div class="style-tabs">
+          <button
+            class="style-tab active"
+            onclick="setStyle('padrao')"
+            id="tabPadrao"
+          >
+            padrão
+            <small>texto completo</small>
+          </button>
+          <button
+            class="style-tab"
+            onclick="setStyle('citacao')"
+            id="tabCitacao"
+          >
+            citação
+            <small>frase de impacto</small>
+          </button>
+          <button class="style-tab" onclick="setStyle('lista')" id="tabLista">
+            lista
+            <small>tópicos numerados</small>
+          </button>
+        </div>
+
+        <!-- TEMPLATES RÁPIDOS -->
+        <p class="section-title">templates atmavox</p>
+
+        <div class="preset-grid">
+          <button class="preset-btn" onclick="applyPreset('estado-cinza')">
+            Estado Cinza
+            <span>3 sinais + cta</span>
+          </button>
+          <button class="preset-btn" onclick="applyPreset('chama-interna')">
+            A Chama Interna
+            <span>ativação + desejo</span>
+          </button>
+          <button class="preset-btn" onclick="applyPreset('desperto')">
+            Desperto Frustrado
+            <span>identificação + tribo</span>
+          </button>
+          <button class="preset-btn" onclick="applyPreset('polarizacao')">
+            Polêmica
+            <span>posicionamento cortante</span>
+          </button>
+        </div>
+
+        <!-- CONTEÚDO -->
+        <p class="section-title">conteúdo</p>
+
+        <div class="field">
+          <label>gancho / capa (slide 1)</label>
+          <input
+            type="text"
+            id="coverTitle"
+            placeholder="ex: Você está no Estado Cinza."
+          />
+        </div>
+
+        <div class="field">
+          <label>subtítulo da capa (opcional)</label>
+          <input
+            type="text"
+            id="coverSub"
+            placeholder="ex: e no fundo… você sempre soube."
+          />
+        </div>
+
+        <!-- Simple mode -->
+        <div id="contentSimple">
+          <div class="field">
+            <label>slides de conteúdo</label>
+            <textarea
+              id="slidesText"
+              rows="6"
+              placeholder="escreva os slides separados por ---&#10;&#10;ex:&#10;Você pensa demais e faz de menos.&#10;&#10;---&#10;&#10;Sua energia some sem motivo aparente.&#10;&#10;---&#10;&#10;Você sente que nasceu pra mais…&#10;mas nunca ativa."
+            ></textarea>
+          </div>
+          <div class="hint-box" id="hintBox">
+            <strong>dica:</strong> separe cada slide com <code>---</code>. cada
+            bloco vira um slide de conteúdo.
+          </div>
+        </div>
+
+        <!-- Blocks mode (com foto) -->
+        <div id="contentBlocks" style="display: none">
+          <div id="slideBlocksContainer"></div>
+          <button class="btn-add-slide" onclick="addSlideBlock()">
+            + adicionar slide
+          </button>
+        </div>
+
+        <div class="field" style="margin-top: 14px">
+          <label>cta (slide final)</label>
+          <textarea
+            id="ctaText"
+            rows="2"
+            placeholder="ex: Você se reconhece nisso? Me conta nos comentários."
+          ></textarea>
+        </div>
+
+        <button class="btn-generate" onclick="generate()">
+          ✦ gerar carrossel
+        </button>
+        <button class="btn-export" id="btnExport" onclick="exportAll()">
+          exportar todos como png
+        </button>
+      </aside>
+
+      <!-- ===== MAIN AREA ===== -->
+      <main class="main" id="mainArea">
+        <div class="empty-state" id="emptyState">
+          <div class="es-icon">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <circle
+                cx="14"
+                cy="14"
+                r="11"
+                stroke="#C9831A"
+                stroke-width="1"
+                opacity="0.4"
+              />
+              <circle cx="14" cy="14" r="4" fill="#C9831A" opacity="0.3" />
+              <line
+                x1="14"
+                y1="3"
+                x2="14"
+                y2="6"
+                stroke="#C9831A"
+                stroke-width="1"
+                opacity="0.3"
+              />
+              <line
+                x1="14"
+                y1="22"
+                x2="14"
+                y2="25"
+                stroke="#C9831A"
+                stroke-width="1"
+                opacity="0.3"
+              />
+              <line
+                x1="3"
+                y1="14"
+                x2="6"
+                y2="14"
+                stroke="#C9831A"
+                stroke-width="1"
+                opacity="0.3"
+              />
+              <line
+                x1="22"
+                y1="14"
+                x2="25"
+                y2="14"
+                stroke="#C9831A"
+                stroke-width="1"
+                opacity="0.3"
+              />
+            </svg>
+          </div>
+          <h3>configure e ative</h3>
+          <p>
+            preencha os campos na lateral, escolha um template ou escreva seu
+            conteúdo — depois clique em gerar.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+      let currentStyle = "padrao";
+      let photoDataURL = null;
+      let slideBlocks = [];
+      let blockCounter = 0;
+
+      // ===== PRESETS =====
+      const PRESETS = {
+        "estado-cinza": {
+          cover: "Você está no Estado Cinza.",
+          coverSub: "e no fundo… você sempre soube.",
+          slides: `Você pensa demais e faz de menos.\n\nSua energia vai embora sem motivo aparente.\n\n---\n\nVocê precisa de validação\npara tomar qualquer decisão.\n\n---\n\nVocê sabe que nasceu pra mais —\nmas nunca consegue ativar.`,
+          cta: "Você se reconhece? Me conta nos comentários.\nSigo cada um aqui.",
+        },
+        "chama-interna": {
+          cover: "A Chama Interna existe em você.",
+          coverSub: "ela só está apagada. não extinta.",
+          slides: `Existe um estado onde você age,\nexiste e expande —\nsem pedir permissão pra ninguém.\n\n---\n\nEsse estado não vem de mais\nautoconhecimento.\n\nVem de ativação.\n\n---\n\nA Chama Interna é o que ATMAVOX\ndesbloquia.\n\nEnergia. Presença. Direção.`,
+          cta: "Comenta CHAMA que eu te mando\no diagnóstico inicial no direct.",
+        },
+        desperto: {
+          cover: "Para o Desperto Frustrado.",
+          coverSub: "esse conteúdo foi feito pra você.",
+          slides: `Você é espiritualizado, inteligente,\nsensível — e está completamente\nparado.\n\n---\n\nVocê sente urgência interna.\nSabe que pode mais.\n\nMas a ação não vem.\n\n---\n\nIsso não é fraqueza.\nÉ desativação.\n\nE existe uma saída.`,
+          cta: "Salve esse carrossel.\nVocê vai precisar lembrar disso.",
+        },
+        polarizacao: {
+          cover: "Autoconhecimento sem ativação\né luxo caro.",
+          coverSub: "e ninguém fala isso.",
+          slides: `A indústria espiritual está te vendendo\nmais paralisia em embalagem bonita.\n\n---\n\nVocê não precisa de mais ferramentas.\nVocê precisa ser ativada.\n\nSão coisas completamente diferentes.\n\n---\n\nA diferença entre quem transforma\ne quem acumula conteúdo\nde transformação.`,
+          cta: "Concorda ou discorda?\nQuero saber o que você pensa.",
+        },
+      };
+
+      function applyPreset(key) {
+        const p = PRESETS[key];
+        document.getElementById("coverTitle").value = p.cover;
+        document.getElementById("coverSub").value = p.coverSub;
+        document.getElementById("ctaText").value = p.cta;
+
+        if (currentStyle === "padrao") {
+          document.getElementById("slidesText").value = p.slides;
+        }
+      }
+
+      // ===== STYLE =====
+      function setStyle(s) {
+        currentStyle = s;
+        ["tabPadrao", "tabCitacao", "tabLista"].forEach((id) =>
+          document.getElementById(id).classList.remove("active")
+        );
+
+        const tabMap = {
+          padrao: "tabPadrao",
+          citacao: "tabCitacao",
+          lista: "tabLista",
+        };
+        document.getElementById(tabMap[s]).classList.add("active");
+
+        document.getElementById("contentSimple").style.display =
+          s === "padrao" || s === "citacao" ? "block" : "none";
+        document.getElementById("contentBlocks").style.display = "none"; // blocks mode not used for lista/citacao
+
+        if (s === "lista") {
+          document.getElementById("contentSimple").style.display = "block";
+          document.getElementById("hintBox").innerHTML =
+            "<strong>dica lista:</strong> cada linha vira um item. separe grupos de itens com <code>---</code> para múltiplos slides de lista.";
+        } else if (s === "citacao") {
+          document.getElementById("hintBox").innerHTML =
+            "<strong>dica citação:</strong> escreva a frase em cada bloco separado por <code>---</code>. cada bloco vira um slide de citação.";
+        } else {
+          document.getElementById("hintBox").innerHTML =
+            "<strong>dica:</strong> separe cada slide com <code>---</code>. cada bloco vira um slide de conteúdo.";
+        }
+      }
+
+      // ===== COLOR SYNC =====
+      function syncColor(pickerId, hex) {
+        if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+          document.getElementById(pickerId).value = hex;
+        }
+      }
+
+      // ===== PHOTO =====
+      function handlePhoto(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          photoDataURL = e.target.result;
+          const img = document.getElementById("photoPreviewImg");
+          img.src = photoDataURL;
+          img.style.display = "block";
+          document.getElementById("photoPlaceholder").style.display = "none";
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // ===== SLIDE BLOCKS =====
+      function addSlideBlock(text, photo) {
+        const id = blockCounter++;
+        slideBlocks.push({ id, text: text || "", photo: photo || null });
+        renderSlideBlocks();
+      }
+
+      function removeSlideBlock(id) {
+        slideBlocks = slideBlocks.filter((b) => b.id !== id);
+        renderSlideBlocks();
+      }
+
+      function handleBlockPhoto(id, input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const block = slideBlocks.find((b) => b.id === id);
+          if (block) block.photo = e.target.result;
+          renderSlideBlocks();
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function updateBlockText(id, val) {
+        const block = slideBlocks.find((b) => b.id === id);
+        if (block) block.text = val;
+      }
+
+      function renderSlideBlocks() {
+        const container = document.getElementById("slideBlocksContainer");
+        container.innerHTML = slideBlocks
+          .map((b, i) => {
+            const fileId = `block-file-${b.id}`;
+            return `
+      <div class="slide-block">
+        <div class="sb-header">
+          <span class="sb-label">slide ${i + 1}</span>
+          ${
+            slideBlocks.length > 1
+              ? `<button class="sb-remove" onclick="removeSlideBlock(${b.id})" title="remover">&times;</button>`
+              : ""
+          }
+        </div>
+        <textarea placeholder="texto deste slide..." oninput="updateBlockText(${
+          b.id
+        }, this.value)">${b.text}</textarea>
+        <div class="sb-photo-row">
+          <div class="sb-photo-thumb" onclick="document.getElementById('${fileId}').click()">
+            ${
+              b.photo
+                ? `<img src="${b.photo}" alt="">`
+                : '<span class="sb-plus">+</span>'
+            }
+          </div>
+          <span class="sb-photo-hint">${
+            b.photo ? "foto adicionada · clique pra trocar" : "foto opcional"
+          }</span>
+          <input type="file" id="${fileId}" accept="image/*" onchange="handleBlockPhoto(${
+              b.id
+            }, this)">
+        </div>
+      </div>`;
+          })
+          .join("");
+      }
+
+      // ===== HELPERS =====
+      function hexToRgba(hex, a) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r},${g},${b},${a})`;
+      }
+
+      function parseSlides(text) {
+        if (!text.trim()) return [];
+        return text
+          .split("---")
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0);
+      }
+
+      function getConfig() {
+        return {
+          name: document.getElementById("brandName").value || "Atmavox",
+          handle: document.getElementById("brandHandle").value || "@atmavox",
+          bg: document.getElementById("colorBg").value,
+          text: document.getElementById("colorText").value,
+          accent: document.getElementById("colorAccent").value,
+          cover:
+            document.getElementById("coverTitle").value ||
+            "Você está no Estado Cinza.",
+          coverSub: document.getElementById("coverSub").value || "",
+          cta:
+            document.getElementById("ctaText").value ||
+            "Quero Sair do Estado Cinza.",
+          photo: photoDataURL,
+          style: currentStyle,
+        };
+      }
+
+      function avatarHTML(c, size) {
+        if (c.photo) {
+          return `<div style="width:100%;height:100%;background:url('${c.photo}') center/cover no-repeat;"></div>`;
+        }
+        return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:${Math.round(
+          size * 0.4
+        )}px;font-weight:700;color:${hexToRgba(
+          c.accent,
+          0.5
+        )};background:${hexToRgba(
+          c.accent,
+          0.1
+        )};font-family:'Jost',sans-serif">${c.name
+          .charAt(0)
+          .toUpperCase()}</div>`;
+      }
+
+      // ===== SLIDE BUILDERS =====
+
+      function buildCover(c, total) {
+        const coverStyle = `background:${c.bg};color:${c.text};`;
+        const accentColor = c.accent;
+
+        return `
+    <div class="atma-slide is-cover" style="${coverStyle}">
+      <div class="atma-line-left" style="background:linear-gradient(180deg,transparent 5%,${hexToRgba(
+        accentColor,
+        0.25
+      )} 30%,${hexToRgba(accentColor, 0.25)} 70%,transparent 95%)"></div>
+      <span class="atma-brand-tag" style="color:${hexToRgba(
+        c.text,
+        0.18
+      )};font-family:'Jost',sans-serif">${c.name}</span>
+
+      <div class="cover-top">
+        <div class="cover-tag" style="color:${accentColor};font-family:'Jost',sans-serif">✦ &nbsp;ativação</div>
+        <div class="cover-headline" style="font-family:'Playfair Display',Georgia,serif;color:${
+          c.text
+        }">${c.cover.replace(/\n/g, "<br>")}</div>
+        ${
+          c.coverSub
+            ? `<div class="cover-sub" style="color:${c.text};font-family:'Jost',sans-serif">${c.coverSub}</div>`
+            : ""
+        }
+      </div>
+
+      <div class="cover-footer">
+        <div class="avatar-circle" style="border-color:${hexToRgba(
+          accentColor,
+          0.4
+        )};background:${hexToRgba(accentColor, 0.08)};color:${hexToRgba(
+          c.text,
+          0.4
+        )};font-family:'Jost',sans-serif">
+          ${avatarHTML(c, 70)}
+        </div>
+        <div class="cover-name-block">
+          <div class="cover-name" style="font-family:'Jost',sans-serif;color:${
+            c.text
+          }">${c.name}</div>
+          <div class="cover-handle" style="font-family:'Jost',sans-serif;color:${
+            c.text
+          }">${c.handle}</div>
+        </div>
+        <div style="flex:1"></div>
+        <div class="swipe-hint" style="color:${
+          c.text
+        };font-family:'Jost',sans-serif">deslize &rarr;</div>
+      </div>
+
+      <div class="cover-amber-dot" style="background:${accentColor}"></div>
+      <span class="atma-counter" style="color:${hexToRgba(
+        c.text,
+        0.15
+      )};font-family:'Jost',sans-serif">1 / ${total}</span>
+    </div>`;
+      }
+
+      function buildContentSlide(c, text, idx, total, photo) {
+        const hasPhoto = !!photo;
+        const bodyClass = hasPhoto ? "content-body" : "content-body no-photo";
+        const bodyFontSize = hasPhoto ? "52px" : "60px";
+        const photoHTML = hasPhoto
+          ? `<div class="content-photo" style="height:360px;background-image:url('${photo}');margin-top:44px"></div>`
+          : "";
+
+        return `
+    <div class="atma-slide is-content" style="background:${c.bg};color:${
+          c.text
+        };">
+      <div class="atma-line-left" style="background:linear-gradient(180deg,transparent 5%,${hexToRgba(
+        c.accent,
+        0.2
+      )} 30%,${hexToRgba(c.accent, 0.2)} 70%,transparent 95%)"></div>
+      <span class="atma-brand-tag" style="color:${hexToRgba(
+        c.text,
+        0.12
+      )};font-family:'Jost',sans-serif">${c.name}</span>
+
+      <div class="content-top">
+        <div class="content-slide-num" style="color:${
+          c.accent
+        };font-family:'Jost',sans-serif">0${idx}</div>
+        <div class="${bodyClass}" style="font-family:'Playfair Display',Georgia,serif;color:${
+          c.text
+        };font-size:${bodyFontSize}">${text.replace(/\n/g, "<br>")}</div>
+        ${photoHTML}
+      </div>
+
+      <div class="content-footer" style="border-top-color:${hexToRgba(
+        c.text,
+        0.08
+      )}">
+        <div class="mini-avatar" style="background:${hexToRgba(
+          c.accent,
+          0.1
+        )};color:${hexToRgba(c.accent, 0.5)};font-family:'Jost',sans-serif">
+          ${avatarHTML(c, 46)}
+        </div>
+        <div>
+          <div class="mini-name" style="font-family:'Jost',sans-serif;color:${
+            c.text
+          }">${c.name}</div>
+          <div class="mini-handle" style="font-family:'Jost',sans-serif;color:${
+            c.text
+          }">${c.handle}</div>
+        </div>
+      </div>
+
+      <span class="atma-counter" style="color:${hexToRgba(
+        c.text,
+        0.15
+      )};font-family:'Jost',sans-serif">${idx + 1} / ${total}</span>
+    </div>`;
+      }
+
+      function buildQuoteSlide(c, text, idx, total) {
+        return `
+    <div class="atma-slide is-quote" style="background:${c.bg};color:${
+          c.text
+        };">
+      <div class="atma-line-left" style="background:linear-gradient(180deg,transparent 5%,${hexToRgba(
+        c.accent,
+        0.2
+      )} 30%,${hexToRgba(c.accent, 0.2)} 70%,transparent 95%)"></div>
+      <span class="atma-brand-tag" style="color:${hexToRgba(
+        c.text,
+        0.12
+      )};font-family:'Jost',sans-serif">${c.name}</span>
+      <div class="quote-mark" style="color:${
+        c.accent
+      };font-family:'Playfair Display',Georgia,serif">"</div>
+      <div class="quote-text" style="font-family:'Playfair Display',Georgia,serif;color:${
+        c.text
+      }">${text.replace(/\n/g, "<br>")}</div>
+      <div class="quote-attr" style="color:${
+        c.accent
+      };font-family:'Jost',sans-serif">— ${c.name}</div>
+      <span class="atma-counter" style="color:${hexToRgba(
+        c.text,
+        0.15
+      )};font-family:'Jost',sans-serif">${idx + 1} / ${total}</span>
+    </div>`;
+      }
+
+      function buildListSlide(c, titleText, items, idx, total) {
+        const [title, ...listItems] =
+          items.length > 0 ? [titleText, ...items] : [titleText];
+        const actualItems = items.length > 0 ? items : [titleText];
+        const actualTitle = items.length > 0 ? titleText : "";
+
+        const itemsHTML = actualItems
+          .map(
+            (item, i) => `
+    <div class="list-item" style="border-color:${hexToRgba(c.text, 0.08)}">
+      <span class="list-item-num" style="font-family:'Playfair Display',Georgia,serif;color:${
+        c.accent
+      }">${String(i + 1).padStart(2, "0")}</span>
+      <span class="list-item-text" style="font-family:'Jost',sans-serif;color:${
+        c.text
+      }">${item.replace(/\n/g, " ")}</span>
+    </div>`
+          )
+          .join("");
+
+        const titleHTML = actualTitle
+          ? `<div class="list-title" style="font-family:'Playfair Display',Georgia,serif;color:${
+              c.text
+            }">${actualTitle.replace(/\n/g, "<br>")}</div>`
+          : "";
+
+        return `
+    <div class="atma-slide is-list" style="background:${c.bg};color:${c.text};">
+      <div class="atma-line-left" style="background:linear-gradient(180deg,transparent 5%,${hexToRgba(
+        c.accent,
+        0.2
+      )} 30%,${hexToRgba(c.accent, 0.2)} 70%,transparent 95%)"></div>
+      <span class="atma-brand-tag" style="color:${hexToRgba(
+        c.text,
+        0.12
+      )};font-family:'Jost',sans-serif">${c.name}</span>
+      ${titleHTML}
+      <div class="list-items">${itemsHTML}</div>
+      <span class="atma-counter" style="color:${hexToRgba(
+        c.text,
+        0.15
+      )};font-family:'Jost',sans-serif">${idx + 1} / ${total}</span>
+    </div>`;
+      }
+
+      function buildCTA(c, total) {
+        return `
+    <div class="atma-slide is-cta" style="background:${c.bg};color:${c.text};">
+      <div class="atma-line-left" style="background:linear-gradient(180deg,transparent 5%,${hexToRgba(
+        c.accent,
+        0.3
+      )} 30%,${hexToRgba(c.accent, 0.3)} 70%,transparent 95%)"></div>
+      <span class="atma-brand-tag" style="color:${hexToRgba(
+        c.text,
+        0.18
+      )};font-family:'Jost',sans-serif">${c.name}</span>
+
+      <div class="cta-label" style="color:${
+        c.accent
+      };font-family:'Jost',sans-serif">✦ &nbsp;sua vez</div>
+      <div class="cta-headline" style="font-family:'Playfair Display',Georgia,serif;color:${
+        c.text
+      }">${c.cta.replace(/\n/g, "<br>")}</div>
+      <div class="cta-pill" style="border-color:${hexToRgba(
+        c.accent,
+        0.5
+      )};color:${c.accent};font-family:'Jost',sans-serif">
+        <span>✦</span> ${c.handle}
+      </div>
+
+      <div class="cta-footer-info" style="color:${
+        c.text
+      };font-family:'Jost',sans-serif">${c.name} · ativação de consciência</div>
+      <span class="atma-counter" style="color:${hexToRgba(
+        c.text,
+        0.15
+      )};font-family:'Jost',sans-serif">${total} / ${total}</span>
+    </div>`;
+      }
+
+      // ===== GENERATE =====
+      function generate() {
+        const c = getConfig();
+        const main = document.getElementById("mainArea");
+
+        let slides = parseSlides(document.getElementById("slidesText").value);
+
+        if (!slides.length && !c.cover) {
+          document.getElementById("emptyState").style.display = "flex";
+          return;
+        }
+
+        document.getElementById("emptyState").style.display = "none";
+        main.innerHTML = "";
+
+        const total = slides.length + 2; // capa + conteúdo + cta
+
+        // CAPA
+        addRenderedSlide(main, "slide-0", "capa", buildCover(c, total));
+
+        // CONTEÚDO
+        slides.forEach((text, i) => {
+          const idx = i + 1;
+          let slideHTML;
+
+          if (currentStyle === "citacao") {
+            slideHTML = buildQuoteSlide(c, text, idx, total);
+          } else if (currentStyle === "lista") {
+            // cada linha vira um item de lista
+            const lines = text
+              .split("\n")
+              .map((l) => l.trim())
+              .filter((l) => l);
+            const listTitle = lines[0] || "";
+            const listItems = lines.slice(1);
+            slideHTML = buildListSlide(c, listTitle, listItems, idx, total);
+          } else {
+            slideHTML = buildContentSlide(c, text, idx, total, null);
+          }
+
+          addRenderedSlide(main, `slide-${idx}`, `slide ${idx + 1}`, slideHTML);
+        });
+
+        // CTA
+        addRenderedSlide(
+          main,
+          `slide-${slides.length + 1}`,
+          "cta / final",
+          buildCTA(c, total)
+        );
+
+        document.getElementById("btnExport").style.display = "block";
+      }
+
+      function addRenderedSlide(parent, id, label, html) {
+        const w = document.createElement("div");
+        w.className = "slide-wrapper";
+        w.innerHTML = `<p class="slide-label-tag">${label}</p><div class="preview-slide" id="${id}">${html}</div>`;
+        parent.appendChild(w);
+      }
+
+      // ===== EXPORT =====
+      async function exportAll() {
+        const wrappers = document.querySelectorAll(".preview-slide");
+        const btn = document.getElementById("btnExport");
+        btn.textContent = "exportando…";
+        btn.disabled = true;
+
+        for (let i = 0; i < wrappers.length; i++) {
+          const slide = wrappers[i].querySelector(".atma-slide");
+          if (!slide) continue;
+
+          const wrapper = wrappers[i];
+          wrapper.classList.remove("preview-slide");
+
+          try {
+            const canvas = await html2canvas(slide, {
+              width: 1080,
+              height: 1080,
+              scale: 2,
+              useCORS: true,
+              allowTaint: true,
+              backgroundColor: null,
+              windowWidth: 1080,
+              windowHeight: 1080,
+            });
+            const link = document.createElement("a");
+            link.download = `atmavox-slide-${String(i + 1).padStart(
+              2,
+              "0"
+            )}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+          } catch (err) {
+            console.error(err);
+          }
+
+          wrapper.classList.add("preview-slide");
+          await new Promise((r) => setTimeout(r, 600));
+        }
+
+        btn.textContent = "exportar todos como png";
+        btn.disabled = false;
+      }
+
+      // Inicializa com preset padrão
+      document.addEventListener("DOMContentLoaded", () => {
+        applyPreset("estado-cinza");
+      });
+    </script>
+  </body>
+</html>
