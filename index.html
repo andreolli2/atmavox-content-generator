@@ -960,21 +960,52 @@ Não é fraqueza. É desativação.
 
 <script>
 // ─── STATE ───
-let currentSlide = 0;
 const totalSlides = 6;
 
 // ─── NAVEGAÇÃO ───
-function prevSlide() { goToSlide((currentSlide - 1 + totalSlides) % totalSlides); }
-function nextSlide() { goToSlide((currentSlide + 1) % totalSlides); }
+let currentSlide = 1;
+
+function prevSlide() { goToSlide(currentSlide - 1); }
+function nextSlide() { goToSlide(currentSlide + 1); }
 
 function goToSlide(n) {
+  if (n < 1 || n > totalSlides) return;
   currentSlide = n;
+  updateSlidePreview();
+  
+  // Atualiza dots e numeração
   const dots = document.querySelectorAll('.preview-dot');
   dots.forEach((d,i) => d.classList.toggle('active', i === n));
   document.getElementById('previewNum').textContent =
     String(n+1).padStart(2,'0') + ' / ' + String(totalSlides).padStart(2,'0');
   document.getElementById('slideInfo').textContent =
     'slide ' + (n+1) + ' / ' + totalSlides + ' · trilha problema';
+}
+
+function updateSlidePreview() {
+  if (currentSlide === 1) {
+    // Slide 1: usa gancho e subtítulo
+    const title = document.getElementById('previewTitle');
+    const sub = document.getElementById('previewSub');
+    if (title) title.innerHTML = document.getElementById('gancho').value
+      .replace(/(Estado Cinza|Chama Interna|paralisa|desativada|cinza)/gi, '<em>$1</em>');
+    if (sub) sub.textContent = document.getElementById('subtitulo').value;
+  } else {
+    // Slides 2-6: extrai do textarea no painel
+    const slideItems = document.querySelectorAll('.slide-item');
+    const index = currentSlide - 2;
+    if (slideItems[index]) {
+      const textarea = slideItems[index].querySelector('textarea');
+      const title = document.getElementById('previewTitle');
+      const sub = document.getElementById('previewSub');
+      if (textarea && sub) {
+        sub.textContent = textarea.value;
+      }
+      if (title) {
+        title.textContent = 'Slide ' + currentSlide;
+      }
+    }
+  }
 }
 
 // ─── TRILHA ───
