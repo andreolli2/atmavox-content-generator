@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATMAVOX — Gerador de Carrossel v2</title>
+<title>ATMAVOX — Gerador de Carrossel</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════
@@ -11,256 +11,300 @@
    Melhorias aplicadas sobre a versão original
    Para uso no Sublime Text / edição direta
 ═══════════════════════════════════════════ */
-
 :root {
-  --bg:        #111009;
-  --bg2:       #1a1810;
-  --bg3:       #222018;
-  --gold:      #c4a96e;
-  --gold-dim:  rgba(196,169,110,0.15);
-  --gold-faint:rgba(196,169,110,0.06);
-  --cream:     #e8dfc8;
-  --muted:     #7a7060;
-  --muted2:    #3a3530;
-  --border:    rgba(196,169,110,0.18);
-  --panel-w:   320px;
-  --slide-size:440px;
+--bg:        #111009;
+--bg2:       #1a1810;
+--bg3:       #222018;
+--gold:      #c4a96e;
+--gold-dim:  rgba(196,169,110,0.15);
+--gold-faint:rgba(196,169,110,0.06);
+--cream:     #e8dfc8;
+--muted:     #7a7060;
+--muted2:    #3a3530;
+--border:    rgba(196,169,110,0.18);
+--panel-w:   320px;
+--slide-size:440px;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  background: var(--bg);
-  color: var(--cream);
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-  display: flex;
-  min-height: 100vh;
-  overflow-x: hidden;
+background: var(--bg);
+color: var(--cream);
+font-family: 'Jost', sans-serif;
+font-weight: 300;
+display: flex;
+min-height: 100vh;
+overflow-x: hidden;
 }
 
 /* ─── PAINEL LATERAL ─── */
 .panel {
-  width: var(--panel-w);
-  min-height: 100vh;
-  background: var(--bg2);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  flex-shrink: 0;
+width: var(--panel-w);
+min-height: 100vh;
+background: var(--bg2);
+border-right: 1px solid var(--border);
+display: flex;
+flex-direction: column;
+overflow-y: auto;
+flex-shrink: 0;
 }
 
 .panel-header {
-  padding: 28px 24px 20px;
-  border-bottom: 1px solid var(--border);
+padding: 28px 24px 20px;
+border-bottom: 1px solid var(--border);
 }
 .panel-header .brand {
-  font-family: 'Jost', sans-serif;
-  font-weight: 200;
-  font-size: 11px;
-  letter-spacing: 6px;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 4px;
+font-family: 'Jost', sans-serif;
+font-weight: 200;
+font-size: 11px;
+letter-spacing: 6px;
+color: var(--muted);
+text-transform: uppercase;
+margin-bottom: 4px;
 }
 .panel-header .brand-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--gold);
+font-family: 'Playfair Display', serif;
+font-size: 18px;
+font-weight: 400;
+font-style: italic;
+color: var(--gold);
 }
 
 /* seções do painel */
 .panel-section {
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border);
+padding: 18px 24px;
+border-bottom: 1px solid var(--border);
 }
 .section-label {
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 4px;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+font-size: 8px;
+font-weight: 400;
+letter-spacing: 4px;
+color: var(--muted);
+text-transform: uppercase;
+margin-bottom: 14px;
+display: flex;
+align-items: center;
+gap: 10px;
 }
 .section-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
+content: '';
+flex: 1;
+height: 1px;
+background: var(--border);
 }
 
 /* inputs */
 label {
-  display: block;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 2px;
-  color: var(--muted);
-  text-transform: uppercase;
-  margin-bottom: 6px;
+display: block;
+font-size: 10px;
+font-weight: 300;
+letter-spacing: 2px;
+color: var(--muted);
+text-transform: uppercase;
+margin-bottom: 6px;
 }
 input[type="text"],
 input[type="color"],
 textarea,
 select {
-  width: 100%;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--cream);
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-  font-size: 13px;
-  padding: 9px 12px;
-  margin-bottom: 14px;
-  outline: none;
-  transition: border-color .2s;
+width: 100%;
+background: var(--bg3);
+border: 1px solid var(--border);
+border-radius: 2px;
+color: var(--cream);
+font-family: 'Jost', sans-serif;
+font-weight: 300;
+font-size: 13px;
+padding: 9px 12px;
+margin-bottom: 14px;
+outline: none;
+transition: border-color .2s;
 }
 input[type="text"]:focus,
 textarea:focus,
 select:focus { border-color: rgba(196,169,110,0.5); }
 
-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+/* Chrome, Edge, Safari */
+textarea::-webkit-scrollbar {
+  width: 10px;
+}
+textarea::-webkit-scrollbar-track {
+  background: var(--bg3); 
+}
+textarea::-webkit-scrollbar-thumb {
+  background: var(--bg2) ; 
+  border-radius: 5px;
+}
+textarea::-webkit-scrollbar-thumb:hover {
+  background: var(--bg); 
+}
+
+::-webkit-scrollbar-corner{
+  width: 5px;
+  height: 5px;
+  border-color: var(--bg2) !important;
+  padding: 0px;
+  margin: 0px;
+  position: absolute;
+  background-color: var(--bg3);
+} 
+
+textarea {
+    resize: vertical;
+    min-height: 80px !important;
+    line-height: 1.6;
+    background-color: var(--bg3); 
+    border: none;
+}
+
+textarea::-webkit-resizer {
+    /* Cria dois riscos usando gradiente */
+    background-image: linear-gradient(135deg, 
+        transparent 0%, transparent 50%, 
+        var(--gold) 50%, var(--gold) 60%, 
+        transparent 60%, transparent 70%, 
+        var(--gold) 70%, var(--gold) 80%, 
+        transparent 80%);
+    background-size: 7px 7px;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+}
 
 select option { background: var(--bg2); }
 
 /* ── MELHORIA 1: Campo de Trilha Narrativa ── */
 .trilha-select {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--cream);
-  font-family: 'Jost', sans-serif;
-  font-weight: 300;
-  font-size: 13px;
-  padding: 9px 12px;
-  margin-bottom: 14px;
-  width: 100%;
-  outline: none;
-  cursor: pointer;
+background: var(--bg3);
+border: 1px solid var(--border);
+border-radius: 2px;
+color: var(--cream);
+font-family: 'Jost', sans-serif;
+font-weight: 300;
+font-size: 13px;
+padding: 9px 12px;
+margin-bottom: 14px;
+width: 100%;
+outline: none;
+cursor: pointer;
 }
 .trilha-badge {
-  display: inline-block;
-  font-size: 8px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 2px;
-  margin-bottom: 10px;
-  border: 1px solid var(--border);
-  color: var(--gold);
+display: inline-block;
+font-size: 8px;
+letter-spacing: 2px;
+text-transform: uppercase;
+padding: 3px 8px;
+border-radius: 2px;
+margin-bottom: 10px;
+border: 1px solid var(--border);
+color: var(--gold);
 }
 
 /* ── MELHORIA 2: Campo de Legenda ── */
 .legenda-area {
-  background: var(--bg3);
-  border: 1px solid rgba(196,169,110,0.25);
-  border-radius: 2px;
-  padding: 12px;
-  margin-bottom: 14px;
+background: var(--bg3);
+border: 1px solid rgba(196,169,110,0.25);
+border-radius: 2px;
+padding: 12px;
+margin-bottom: 14px;
 }
 .legenda-area textarea {
-  border: none;
-  background: transparent;
-  margin-bottom: 0;
-  padding: 0;
-  font-size: 13px;
-  min-height: 70px;
+border: none;
+background: transparent;
+margin-bottom: 0;
+padding: 0;
+font-size: 13px;
+min-height: 70px;
 }
 .legenda-char-count {
-  font-size: 9px;
-  letter-spacing: 1px;
-  color: var(--muted);
-  text-align: right;
-  margin-top: 4px;
+font-size: 9px;
+letter-spacing: 1px;
+color: var(--muted);
+text-align: right;
+margin-top: 4px;
 }
 
 /* ── MELHORIA 3: CTA de DM estratégico ── */
 .cta-presets {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 14px;
+display: flex;
+flex-direction: column;
+gap: 6px;
+margin-bottom: 14px;
 }
 .cta-preset-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--muted);
-  font-family: 'Jost', sans-serif;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 1px;
-  padding: 8px 12px;
-  text-align: left;
-  cursor: pointer;
-  transition: all .2s;
+background: transparent;
+border: 1px solid var(--border);
+border-radius: 2px;
+color: var(--muted);
+font-family: 'Jost', sans-serif;
+font-size: 11px;
+font-weight: 300;
+letter-spacing: 1px;
+padding: 8px 12px;
+text-align: left;
+cursor: pointer;
+transition: all .2s;
 }
 .cta-preset-btn:hover {
-  border-color: rgba(196,169,110,0.4);
-  color: var(--gold);
-  background: var(--gold-faint);
+border-color: rgba(196,169,110,0.4);
+color: var(--gold);
+background: var(--gold-faint);
 }
 .cta-preset-btn.active {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: var(--gold-faint);
+border-color: var(--gold);
+color: var(--gold);
+background: var(--gold-faint);
 }
 
 /* templates */
 .templates-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-bottom: 6px;
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 6px;
+margin-bottom: 6px;
 }
 .template-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--muted);
-  font-family: 'Jost', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 1px;
-  padding: 10px 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all .2s;
-  line-height: 1.4;
+background: transparent;
+border: 1px solid var(--border);
+border-radius: 2px;
+color: var(--muted);
+font-family: 'Jost', sans-serif;
+font-size: 10px;
+font-weight: 300;
+letter-spacing: 1px;
+padding: 10px 8px;
+text-align: center;
+cursor: pointer;
+transition: all .2s;
+line-height: 1.4;
 }
 .template-btn:hover {
-  border-color: rgba(196,169,110,0.4);
-  color: var(--gold);
-  background: var(--gold-faint);
+border-color: rgba(196,169,110,0.4);
+color: var(--gold);
+background: var(--gold-faint);
 }
 /* ── MELHORIA: template Problema em destaque ── */
 .template-btn.problema {
-  border-color: rgba(196,169,110,0.35);
-  color: var(--gold);
-  grid-column: 1 / -1;
-  background: rgba(196,169,110,0.05);
+border-color: rgba(196,169,110,0.35);
+color: var(--gold);
+grid-column: 1 / -1;
+background: rgba(196,169,110,0.05);
 }
 .template-btn .t-name { font-weight: 400; }
 .template-btn .t-desc { font-size: 9px; opacity: .6; margin-top: 2px; }
 
 /* avatar upload */
 .avatar-upload {
-  width: 64px; height: 64px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  margin-bottom: 14px;
-  overflow: hidden;
-  position: relative;
-  transition: border-color .2s;
+width: 64px; height: 64px;
+border-radius: 50%;
+border: 1px solid var(--border);
+display: flex; align-items: center; justify-content: center;
+cursor: pointer;
+margin-bottom: 14px;
+overflow: hidden;
+position: relative;
+transition: border-color .2s;
 }
 .avatar-upload:hover { border-color: var(--gold); }
 .avatar-upload span { font-size: 10px; color: var(--muted); letter-spacing: 1px; }
@@ -268,440 +312,449 @@ select option { background: var(--bg2); }
 
 /* cores */
 .color-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 14px;
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 8px;
+margin-bottom: 14px;
 }
 .color-field label { font-size: 8px; }
 .color-swatch {
-  width: 100%;
-  height: 32px;
-  border-radius: 2px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: border-color .2s;
+width: 100%;
+height: 32px;
+border-radius: 2px;
+border: 1px solid var(--border);
+cursor: pointer;
+transition: border-color .2s;
 }
 .color-swatch:hover { border-color: var(--gold); }
 
 /* slides de conteúdo */
 .slides-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
 .slide-item {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 10px 12px;
-  cursor: pointer;
-  transition: border-color .2s;
-  position: relative;
+background: var(--bg3);
+border: 1px solid var(--border);
+border-radius: 2px;
+padding: 10px 12px;
+cursor: pointer;
+transition: border-color .2s;
+position: relative;
 }
 .slide-item:hover { border-color: rgba(196,169,110,0.3); }
 .slide-item .slide-num {
-  font-size: 8px; letter-spacing: 2px; color: var(--muted);
-  text-transform: uppercase; margin-bottom: 4px;
+font-size: 8px; letter-spacing: 2px; color: var(--muted);
+text-transform: uppercase; margin-bottom: 4px;
 }
 .slide-item textarea {
-  border: none; background: transparent;
-  padding: 0; margin-bottom: 0;
-  font-size: 12px; min-height: 50px;
-  color: var(--cream);
+border: none; background: transparent;
+padding: 0; margin-bottom: 0;
+font-size: 12px; min-height: 50px;
+color: var(--cream);
 }
 
 /* ── MELHORIA 4: Seletor de layout por slide ── */
 .slide-layout-row {
-  display: flex; gap: 4px; margin-top: 8px;
+display: flex; gap: 4px; margin-top: 8px;
 }
 .layout-chip {
-  font-size: 8px; letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  cursor: pointer;
-  color: var(--muted);
-  transition: all .2s;
-  background: transparent;
-  font-family: 'Jost', sans-serif;
+font-size: 8px; letter-spacing: 1px;
+text-transform: uppercase;
+padding: 3px 8px;
+border: 1px solid var(--border);
+border-radius: 2px;
+cursor: pointer;
+color: var(--muted);
+transition: all .2s;
+background: transparent;
+font-family: 'Jost', sans-serif;
 }
 .layout-chip.active {
-  border-color: var(--gold);
-  color: var(--gold);
-  background: var(--gold-faint);
+border-color: var(--gold);
+color: var(--gold);
+background: var(--gold-faint);
 }
 
 .add-slide-btn {
-  width: 100%;
-  background: transparent;
-  border: 1px dashed var(--muted2);
-  border-radius: 2px;
-  color: var(--muted);
-  font-family: 'Jost', sans-serif;
-  font-size: 11px;
-  font-weight: 300;
-  letter-spacing: 2px;
-  padding: 10px;
-  cursor: pointer;
-  transition: all .2s;
-  margin-bottom: 4px;
+width: 100%;
+background: transparent;
+border: 1px dashed var(--muted2);
+border-radius: 2px;
+color: var(--muted);
+font-family: 'Jost', sans-serif;
+font-size: 11px;
+font-weight: 300;
+letter-spacing: 2px;
+padding: 10px;
+cursor: pointer;
+transition: all .2s;
+margin-bottom: 4px;
 }
 .add-slide-btn:hover { border-color: var(--gold); color: var(--gold); }
 
 /* botão principal */
 .generate-btn {
-  width: calc(100% - 48px);
-  margin: 18px 24px;
-  background: transparent;
-  border: 1px solid var(--gold);
-  border-radius: 2px;
-  color: var(--gold);
-  font-family: 'Jost', sans-serif;
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  padding: 14px;
-  cursor: pointer;
-  position: relative;
-  transition: all .2s;
+width: calc(100% - 48px);
+margin: 18px 24px;
+background: transparent;
+border: 1px solid var(--gold);
+border-radius: 2px;
+color: var(--gold);
+font-family: 'Jost', sans-serif;
+font-size: 10px;
+font-weight: 400;
+letter-spacing: 4px;
+text-transform: uppercase;
+padding: 14px;
+cursor: pointer;
+position: relative;
+transition: all .2s;
 }
 .generate-btn::before {
-  content: '';
-  position: absolute; inset: 3px;
-  border: 1px solid rgba(196,169,110,0.12);
+content: '';
+position: absolute; inset: 3px;
+border: 1px solid rgba(196,169,110,0.12);
 }
 .generate-btn:hover {
-  background: rgba(196,169,110,0.08);
+background: rgba(196,169,110,0.08);
 }
 
 .export-btn {
-  width: calc(100% - 48px);
-  margin: 0 24px 24px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--muted);
-  font-family: 'Jost', sans-serif;
-  font-size: 9px;
-  font-weight: 300;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  padding: 10px;
-  cursor: pointer;
-  transition: all .2s;
+width: calc(100% - 48px);
+margin: 0 24px 24px;
+background: transparent;
+border: 1px solid var(--border);
+border-radius: 2px;
+color: var(--muted);
+font-family: 'Jost', sans-serif;
+font-size: 9px;
+font-weight: 300;
+letter-spacing: 3px;
+text-transform: uppercase;
+padding: 10px;
+cursor: pointer;
+transition: all .2s;
 }
 .export-btn:hover { border-color: var(--gold); color: var(--gold); }
 
 /* ─── ÁREA PRINCIPAL ─── */
 .main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 32px;
-  overflow-y: auto;
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 40px 32px;
+overflow-y: auto;
 }
 
 .main-header {
-  width: 100%;
-  max-width: 520px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 28px;
+width: 100%;
+max-width: 520px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 28px;
 }
 .main-header .slide-info {
-  font-size: 10px; letter-spacing: 2px;
-  color: var(--muted); text-transform: uppercase;
+font-size: 10px; letter-spacing: 2px;
+color: var(--muted); text-transform: uppercase;
 }
 
 /* ── MELHORIA 5: Preview com navegação entre slides ── */
 .carousel-nav {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+display: flex;
+align-items: center;
+gap: 12px;
 }
 .nav-arrow {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--gold);
-  font-size: 16px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .2s;
+width: 32px; height: 32px;
+border-radius: 50%;
+border: 1px solid var(--border);
+background: transparent;
+color: var(--gold);
+font-size: 16px;
+cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+transition: all .2s;
 }
 .nav-arrow:hover { border-color: var(--gold); background: var(--gold-faint); }
 
 /* slide preview */
 .slide-preview {
-  width: var(--slide-size);
-  height: var(--slide-size);
-  background: #14120f;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 48px 44px;
-  margin-bottom: 20px;
+width: var(--slide-size);
+height: var(--slide-size);
+background: #14120f;
+border: 1px solid var(--border);
+border-radius: 2px;
+position: relative;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+text-align: center;
+padding: 48px 44px;
+margin-bottom: 20px;
+transition: box-shadow 0.3s ease;
 }
 .slide-preview::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 50% 44%, rgba(196,169,110,0.09) 0%, transparent 68%);
-  pointer-events: none;
+content: '';
+position: absolute; inset: 0;
+background: radial-gradient(ellipse 60% 50% at 50% 44%, rgba(196,169,110,0.09) 0%, transparent 68%);
+pointer-events: none;
 }
+
+/* Animação de highlight */
+@keyframes highlight-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196,169,110,0); }
+  50% { box-shadow: 0 0 40px 8px rgba(196,169,110,0.4); }
+}
+
+.slide-preview.highlight {
+  animation: highlight-pulse 1.2s ease-out;
+}
+
 .slide-preview .sp-brand {
-  position: absolute; top: 18px;
-  font-size: 7px; letter-spacing: 5px;
-  color: var(--muted2); text-transform: uppercase;
+position: absolute; top: 18px;
+font-size: 7px; letter-spacing: 5px;
+color: var(--muted2); text-transform: uppercase;
 }
 .slide-preview .sp-num {
-  position: absolute; bottom: 18px; right: 22px;
-  font-size: 8px; letter-spacing: 2px; color: var(--muted2);
+position: absolute; bottom: 18px; right: 22px;
+font-size: 8px; letter-spacing: 2px; color: var(--muted2);
 }
 .slide-preview .sp-eyebrow {
-  font-size: 8px; letter-spacing: 4px;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 20px;
+font-size: 8px; letter-spacing: 4px;
+color: var(--muted); text-transform: uppercase;
+margin-bottom: 20px;
 }
 .slide-preview .sp-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 36px; font-weight: 400; line-height: 1.14;
-  color: var(--cream); margin-bottom: 24px;
+font-family: 'Playfair Display', serif;
+font-size: 36px; font-weight: 400; line-height: 1.14;
+color: var(--cream); margin-bottom: 24px;
 }
 .slide-preview .sp-title em { font-style: italic; color: var(--gold); }
 .slide-preview .sp-ornament {
-  display: flex; align-items: center; gap: 10px;
-  justify-content: center; margin-bottom: 16px;
+display: flex; align-items: center; gap: 10px;
+justify-content: center; margin-bottom: 16px;
 }
 .slide-preview .sp-ornament span { display: block; }
 .slide-preview .sp-ornament .ol { width: 28px; height: 1px; background: var(--border); }
 .slide-preview .sp-ornament .od { width: 4px; height: 4px; background: var(--gold); transform: rotate(45deg); opacity: .5; }
 .slide-preview .sp-sub {
-  font-size: 10px; letter-spacing: 3px;
-  color: var(--muted); text-transform: uppercase;
+font-size: 10px; letter-spacing: 3px;
+color: var(--muted); text-transform: uppercase;
 }
 
 /* dots preview */
 .preview-dots {
-  display: flex; gap: 5px; margin-bottom: 16px;
+display: flex; gap: 5px; margin-bottom: 16px;
 }
 .preview-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%; background: var(--muted2);
-  cursor: pointer; transition: all .25s;
+width: 5px; height: 5px;
+border-radius: 50%; background: var(--muted2);
+cursor: pointer; transition: all .25s;
 }
 .preview-dot.active { background: var(--gold); transform: scale(1.3); }
 
 /* ── MELHORIA 6: Painel de Legenda ao lado do preview ── */
 .legenda-preview-box {
-  width: var(--slide-size);
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 16px 18px;
-  margin-bottom: 20px;
+width: var(--slide-size);
+background: var(--bg2);
+border: 1px solid var(--border);
+border-radius: 2px;
+padding: 16px 18px;
+margin-bottom: 20px;
 }
 .lpb-label {
-  font-size: 8px; letter-spacing: 3px;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 10px;
-  display: flex; align-items: center; gap: 8px;
+font-size: 8px; letter-spacing: 3px;
+color: var(--muted); text-transform: uppercase;
+margin-bottom: 10px;
+display: flex; align-items: center; gap: 8px;
 }
 .lpb-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 .lpb-text {
-  font-size: 12px; font-weight: 300;
-  color: #aaa; line-height: 1.75;
+font-size: 12px; font-weight: 300;
+color: #aaa; line-height: 1.75;
 }
 .lpb-hashtags {
-  font-size: 11px; color: #4a6070;
-  margin-top: 8px; line-height: 1.8;
+font-size: 11px; color: #4a6070;
+margin-top: 8px; line-height: 1.8;
 }
 .lpb-copy-btn {
-  margin-top: 10px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--muted);
-  font-family: 'Jost', sans-serif;
-  font-size: 9px; letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  cursor: pointer;
-  transition: all .2s;
+margin-top: 10px;
+background: transparent;
+border: 1px solid var(--border);
+border-radius: 2px;
+color: var(--muted);
+font-family: 'Jost', sans-serif;
+font-size: 9px; letter-spacing: 2px;
+text-transform: uppercase;
+padding: 6px 14px;
+cursor: pointer;
+transition: all .2s;
 }
 .lpb-copy-btn:hover { border-color: var(--gold); color: var(--gold); }
 
 /* ── MELHORIA 7: Status de publicação (vínculo com Notion) ── */
 .status-bar {
-  width: var(--slide-size);
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 12px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
+width: var(--slide-size);
+background: var(--bg2);
+border: 1px solid var(--border);
+border-radius: 2px;
+padding: 12px 18px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 8px;
 }
 .status-bar .status-label {
-  font-size: 9px; letter-spacing: 2px;
-  color: var(--muted); text-transform: uppercase;
+font-size: 9px; letter-spacing: 2px;
+color: var(--muted); text-transform: uppercase;
 }
 .status-select {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--gold);
-  font-family: 'Jost', sans-serif;
-  font-size: 10px;
-  letter-spacing: 1px;
-  padding: 5px 10px;
-  cursor: pointer;
-  outline: none;
+background: var(--bg3);
+border: 1px solid var(--border);
+border-radius: 2px;
+color: var(--gold);
+font-family: 'Jost', sans-serif;
+font-size: 10px;
+letter-spacing: 1px;
+padding: 5px 10px;
+cursor: pointer;
+outline: none;
 }
 
 /* ── MELHORIA 8: Indicador de trilha ── */
 .trilha-indicator {
-  width: var(--slide-size);
-  border-radius: 2px;
-  padding: 10px 18px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  border: 1px solid rgba(196,169,110,0.2);
-  background: rgba(196,169,110,0.04);
+width: var(--slide-size);
+border-radius: 2px;
+padding: 10px 18px;
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 20px;
+border: 1px solid rgba(196,169,110,0.2);
+background: rgba(196,169,110,0.04);
 }
 .ti-dot {
-  width: 6px; height: 6px;
-  background: var(--gold);
-  border-radius: 50%;
-  flex-shrink: 0;
+width: 6px; height: 6px;
+background: var(--gold);
+border-radius: 50%;
+flex-shrink: 0;
 }
 .ti-text {
-  font-size: 10px; letter-spacing: 2px;
-  color: var(--gold); text-transform: uppercase;
+font-size: 10px; letter-spacing: 2px;
+color: var(--gold); text-transform: uppercase;
 }
 .ti-sub {
-  font-size: 9px; letter-spacing: 1px;
-  color: var(--muted); margin-left: auto;
+font-size: 9px; letter-spacing: 1px;
+color: var(--muted); margin-left: auto;
 }
 
 /* ── MELHORIA 9: Barra de hashtags automáticas ── */
 .hashtag-bar {
-  width: var(--slide-size);
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 12px 18px;
-  margin-bottom: 20px;
+width: var(--slide-size);
+background: var(--bg2);
+border: 1px solid var(--border);
+border-radius: 2px;
+padding: 12px 18px;
+margin-bottom: 20px;
 }
 .hb-label {
-  font-size: 8px; letter-spacing: 3px;
-  color: var(--muted); text-transform: uppercase;
-  margin-bottom: 8px;
+font-size: 8px; letter-spacing: 3px;
+color: var(--muted); text-transform: uppercase;
+margin-bottom: 8px;
 }
 .hb-tags {
-  display: flex; flex-wrap: wrap; gap: 5px;
+display: flex; flex-wrap: wrap; gap: 5px;
 }
 .hb-tag {
-  font-size: 10px; font-weight: 300;
-  color: var(--muted);
-  border: 1px solid var(--muted2);
-  border-radius: 2px;
-  padding: 3px 8px;
-  cursor: pointer;
-  transition: all .2s;
+font-size: 10px; font-weight: 300;
+color: var(--muted);
+border: 1px solid var(--muted2);
+border-radius: 2px;
+padding: 3px 8px;
+cursor: pointer;
+transition: all .2s;
 }
 .hb-tag:hover { border-color: var(--gold); color: var(--gold); }
 .hb-tag.active { border-color: var(--gold); color: var(--gold); background: var(--gold-faint); }
 
 /* empty state */
 .empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 60px 0;
-  text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 16px;
+padding: 60px 0;
+text-align: center;
 }
 .empty-state .es-icon {
-  font-family: 'Playfair Display', serif;
-  font-size: 40px;
-  font-style: italic;
-  color: rgba(196,169,110,0.15);
+font-family: 'Playfair Display', serif;
+font-size: 40px;
+font-style: italic;
+color: rgba(196,169,110,0.15);
 }
 .empty-state .es-text {
-  font-size: 12px; letter-spacing: 2px;
-  color: var(--muted); text-transform: uppercase;
-  line-height: 1.8;
+font-size: 12px; letter-spacing: 2px;
+color: var(--muted); text-transform: uppercase;
+line-height: 1.8;
 }
 
 /* ─── RESPONSIVO MOBILE ─── */
 @media (max-width: 768px) {
-  body { flex-direction: column; }
-  .panel {
-    width: 100%;
-    min-height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-  .main { padding: 24px 16px; }
-  :root { --slide-size: calc(100vw - 32px); }
+body { flex-direction: column; }
+.panel {
+width: 100%;
+min-height: auto;
+border-right: none;
+border-bottom: 1px solid var(--border);
+}
+.main { padding: 24px 16px; }
+:root { --slide-size: calc(100vw - 32px); }
 }
 </style>
+
 </head>
 <body>
-
 <!-- ═══ PAINEL LATERAL ═══ -->
 <aside class="panel">
-
   <div class="panel-header">
     <div class="brand">Atmavox</div>
     <div class="brand-title">gerador de carrossel</div>
   </div>
-
   <!-- IDENTIDADE -->
   <div class="panel-section">
     <div class="section-label">Identidade Visual</div>
+<label>Nome / Marca</label>
+<input type="text" id="brandName" value="Atmavox" placeholder="ex: Atmavox">
 
-    <label>Nome / Marca</label>
-    <input type="text" id="brandName" value="Atmavox" placeholder="ex: Atmavox">
+<label>@ Instagram / TikTok</label>
+<input type="text" id="handle" value="@atmavox" placeholder="@seuhandle">
 
-    <label>@ Instagram / TikTok</label>
-    <input type="text" id="handle" value="@atmavox" placeholder="@seuhandle">
+<label>Foto de Perfil / Logo</label>
+<div class="avatar-upload" id="avatarUpload" onclick="document.getElementById('avatarInput').click()">
+  <span>✦</span>
+  <img id="avatarImg" src="" alt="">
+</div>
+<input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="loadAvatar(this)">
 
-    <label>Foto de Perfil / Logo</label>
-    <div class="avatar-upload" id="avatarUpload" onclick="document.getElementById('avatarInput').click()">
-      <span>✦</span>
-      <img id="avatarImg" src="" alt="">
-    </div>
-    <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="loadAvatar(this)">
-
-    <div class="color-row">
-      <div class="color-field">
-        <label>Fundo</label>
-        <input type="color" class="color-swatch" id="colorBg" value="#14120F">
-      </div>
-      <div class="color-field">
-        <label>Texto</label>
-        <input type="color" class="color-swatch" id="colorText" value="#E8DFC8">
-      </div>
-      <div class="color-field">
-        <label>Âmbar</label>
-        <input type="color" class="color-swatch" id="colorAccent" value="#C4A96E">
-      </div>
-    </div>
+<div class="color-row">
+  <div class="color-field">
+    <label>Fundo</label>
+    <input type="color" class="color-swatch" id="colorBg" value="#14120F">
   </div>
+  <div class="color-field">
+    <label>Texto</label>
+    <input type="color" class="color-swatch" id="colorText" value="#E8DFC8">
+  </div>
+  <div class="color-field">
+    <label>Âmbar</label>
+    <input type="color" class="color-swatch" id="colorAccent" value="#C4A96E">
+  </div>
+</div>
 
+  </div>
   <!-- ── MELHORIA 1: TRILHA NARRATIVA ── -->
   <div class="panel-section">
     <div class="section-label">Trilha Narrativa</div>
@@ -717,7 +770,6 @@ select option { background: var(--bg2); }
       <option value="oferta">✦ Oferta Direta — Convite ao Protocolo</option>
     </select>
   </div>
-
   <!-- LAYOUT -->
   <div class="panel-section">
     <div class="section-label">Layout do Slide</div>
@@ -729,7 +781,6 @@ select option { background: var(--bg2); }
       <option value="definicao">Definição — palavra + conceito</option>
     </select>
   </div>
-
   <!-- TEMPLATES -->
   <div class="panel-section">
     <div class="section-label">Templates ATMAVOX</div>
@@ -756,74 +807,72 @@ select option { background: var(--bg2); }
       </button>
     </div>
   </div>
-
   <!-- CONTEÚDO -->
   <div class="panel-section">
     <div class="section-label">Conteúdo</div>
+<label>Gancho / Capa (slide 1)</label>
+<textarea id="gancho" rows="3" placeholder="ex: Você está consciente de tudo — e mesmo assim não consegue sair do lugar.">Você está consciente de tudo — e mesmo assim não consegue sair do lugar.</textarea>
 
-    <label>Gancho / Capa (slide 1)</label>
-    <textarea id="gancho" rows="3" placeholder="ex: Você está consciente de tudo — e mesmo assim não consegue sair do lugar.">Você está consciente de tudo — e mesmo assim não consegue sair do lugar.</textarea>
+<label>Subtítulo da capa (opcional)</label>
+<input type="text" id="subtitulo" value="Isso tem nome. Continue." placeholder="ex: Isso tem nome. Continue.">
 
-    <label>Subtítulo da capa (opcional)</label>
-    <input type="text" id="subtitulo" value="Isso tem nome. Continue." placeholder="ex: Isso tem nome. Continue.">
-
-    <label>Slides de conteúdo</label>
-    <div class="slides-list" id="slidesList">
-      <div class="slide-item">
-        <div class="slide-num">Slide 2</div>
-        <textarea placeholder="Conteúdo do slide...">O problema não é falta de informação.
+<label>Slides de conteúdo</label>
+<div class="slides-list" id="slidesList">
+  <div class="slide-item">
+    <div class="slide-num">Slide 2</div>
+    <textarea placeholder="Conteúdo do slide...">O problema não é falta de informação.
 Você já leu, estudou, entendeu.
 Mas algo te paralisa antes de cada movimento real.
 Isso não é fraqueza — é um estado energético.</textarea>
-        <div class="slide-layout-row">
-          <button class="layout-chip active">Padrão</button>
-          <button class="layout-chip">Citação</button>
-          <button class="layout-chip">Lista</button>
-        </div>
-      </div>
-      <div class="slide-item">
-        <div class="slide-num">Slide 3</div>
-        <textarea>Os sinais que você ignora:
+<div class="slide-layout-row">
+<button class="layout-chip active">Padrão</button>
+<button class="layout-chip">Citação</button>
+<button class="layout-chip">Lista</button>
+</div>
+</div>
+<div class="slide-item">
+<div class="slide-num">Slide 3</div>
+<textarea>Os sinais que você ignora:
 
-1. Você pensa demais e faz de menos
-2. Sua energia some sem motivo
-3. Você sonha alto, mas vive pequeno</textarea>
-        <div class="slide-layout-row">
-          <button class="layout-chip">Padrão</button>
-          <button class="layout-chip">Citação</button>
-          <button class="layout-chip active">Lista</button>
-        </div>
-      </div>
-      <div class="slide-item">
-        <div class="slide-num">Slide 4</div>
-        <textarea>Esse estado tem um nome:
+Você pensa demais e faz de menos
+Sua energia some sem motivo
+Você sonha alto, mas vive pequeno</textarea>
+<div class="slide-layout-row">
+<button class="layout-chip">Padrão</button>
+<button class="layout-chip">Citação</button>
+<button class="layout-chip active">Lista</button>
+</div>
+</div>
+<div class="slide-item">
+<div class="slide-num">Slide 4</div>
+<textarea>Esse estado tem um nome:
 
 Estado Cinza.
 
 Viver pedindo permissão para existir — mesmo sabendo que nasceu para expandir.</textarea>
-        <div class="slide-layout-row">
-          <button class="layout-chip">Padrão</button>
-          <button class="layout-chip active">Citação</button>
-          <button class="layout-chip">Lista</button>
-        </div>
-      </div>
-      <div class="slide-item">
-        <div class="slide-num">Slide 5</div>
-        <textarea>Você não está quebrada.
+<div class="slide-layout-row">
+<button class="layout-chip">Padrão</button>
+<button class="layout-chip active">Citação</button>
+<button class="layout-chip">Lista</button>
+</div>
+</div>
+<div class="slide-item">
+<div class="slide-num">Slide 5</div>
+<textarea>Você não está quebrada.
 Está desativada.
 
 Ativar não é pensar — é acender.
 E isso muda tudo.</textarea>
-        <div class="slide-layout-row">
-          <button class="layout-chip">Padrão</button>
-          <button class="layout-chip active">Citação</button>
-          <button class="layout-chip">Lista</button>
-        </div>
-      </div>
-    </div>
-    <button class="add-slide-btn" onclick="addSlide()">+ adicionar slide</button>
-  </div>
+<div class="slide-layout-row">
+<button class="layout-chip">Padrão</button>
+<button class="layout-chip active">Citação</button>
+<button class="layout-chip">Lista</button>
+</div>
+</div>
+</div>
+<button class="add-slide-btn" onclick="addSlide()">+ adicionar slide</button>
 
+  </div>
   <!-- ── MELHORIA 2: CTA ESTRATÉGICO DE DM ── -->
   <div class="panel-section">
     <div class="section-label">CTA Estratégico</div>
@@ -837,7 +886,6 @@ E isso muda tudo.</textarea>
     <label>CTA personalizado</label>
     <textarea id="ctaText" rows="2">Reconheceu algum desses sinais? Comenta ATIVA aqui — eu vou falar com você no DM.</textarea>
   </div>
-
   <!-- ── MELHORIA 3: LEGENDA COMPLETA ── -->
   <div class="panel-section">
     <div class="section-label">Legenda Instagram</div>
@@ -847,20 +895,19 @@ Não é fraqueza. É desativação.
 👇 Quero Sair do Estado Cinza</textarea>
       <div class="legenda-char-count" id="legendaCount">0 / 2200</div>
     </div>
+<label>Hashtags</label>
+<div class="hb-tags" id="hashtagPool">
+  <span class="hb-tag active">#EstadoCinza</span>
+  <span class="hb-tag active">#Atmavox</span>
+  <span class="hb-tag active">#AtivaçãoDeConsciência</span>
+  <span class="hb-tag active">#DespertaFrustrado</span>
+  <span class="hb-tag">#ChamaInterna</span>
+  <span class="hb-tag">#TransformaçãoReal</span>
+  <span class="hb-tag">#Protocolo</span>
+  <span class="hb-tag">#EnergiaVital</span>
+</div>
 
-    <label>Hashtags</label>
-    <div class="hb-tags" id="hashtagPool">
-      <span class="hb-tag active">#EstadoCinza</span>
-      <span class="hb-tag active">#Atmavox</span>
-      <span class="hb-tag active">#AtivaçãoDeConsciência</span>
-      <span class="hb-tag active">#DespertaFrustrado</span>
-      <span class="hb-tag">#ChamaInterna</span>
-      <span class="hb-tag">#TransformaçãoReal</span>
-      <span class="hb-tag">#Protocolo</span>
-      <span class="hb-tag">#EnergiaVital</span>
-    </div>
   </div>
-
   <!-- ── MELHORIA 4: STATUS NOTION ── -->
   <div class="panel-section">
     <div class="section-label">Status — Banco de Execução</div>
@@ -884,15 +931,12 @@ Não é fraqueza. É desativação.
       <option value="7">Dia 7 · A Chamada</option>
     </select>
   </div>
-
-  <button class="generate-btn" onclick="generateCarousel()">✦ gerar carrossel</button>
-  <button class="export-btn" onclick="exportAll()">exportar todos como png</button>
+<button class="generate-btn" onclick="generateCarousel()">✦ gerar carrossel</button>
+<button class="export-btn" onclick="exportAll()">exportar todos como png</button>
 
 </aside>
-
 <!-- ═══ ÁREA PRINCIPAL ═══ -->
 <main class="main">
-
   <div class="main-header">
     <div class="slide-info" id="slideInfo">slide 1 / 6 · trilha problema</div>
     <div class="carousel-nav">
@@ -900,14 +944,12 @@ Não é fraqueza. É desativação.
       <button class="nav-arrow" onclick="nextSlide()">›</button>
     </div>
   </div>
-
   <!-- ── MELHORIA 5: INDICADOR DE TRILHA ── -->
   <div class="trilha-indicator">
     <div class="ti-dot"></div>
     <div class="ti-text" id="trilhaIndicator">Trilha · Problema</div>
     <div class="ti-sub" id="diaIndicator">Dia 2 · A Dor</div>
   </div>
-
   <!-- PREVIEW DO SLIDE -->
   <div class="slide-preview" id="slidePreview">
     <span class="sp-brand" id="previewBrand">Atmavox</span>
@@ -923,17 +965,14 @@ Não é fraqueza. É desativação.
     <p class="sp-sub" id="previewSub">Isso tem nome. Continue.</p>
     <span class="sp-num" id="previewNum">01 / 06</span>
   </div>
-
   <!-- DOTS -->
   <div class="preview-dots" id="previewDots">
-    <div class="preview-dot active" onclick="goToSlide(0)"></div>
-    <div class="preview-dot" onclick="goToSlide(1)"></div>
+    <div class="preview-dot active" onclick="goToSlide(1)"></div>
     <div class="preview-dot" onclick="goToSlide(2)"></div>
     <div class="preview-dot" onclick="goToSlide(3)"></div>
     <div class="preview-dot" onclick="goToSlide(4)"></div>
     <div class="preview-dot" onclick="goToSlide(5)"></div>
   </div>
-
   <!-- ── MELHORIA 6: LEGENDA NO PREVIEW ── -->
   <div class="legenda-preview-box">
     <div class="lpb-label">Legenda Instagram</div>
@@ -943,7 +982,6 @@ Não é fraqueza. É desativação.
     <div class="lpb-hashtags" id="hashtagPreview">#EstadoCinza #Atmavox #AtivaçãoDeConsciência #DespertaFrustrado</div>
     <button class="lpb-copy-btn" onclick="copyLegenda()">copiar legenda</button>
   </div>
-
   <!-- ── MELHORIA 7: STATUS BAR ── -->
   <div class="status-bar">
     <span class="status-label">Status Notion</span>
@@ -955,16 +993,51 @@ Não é fraqueza. É desativação.
       <option value="publicado">✦ Publicado</option>
     </select>
   </div>
-
 </main>
-
 <script>
+// ═══════════════════════════════════════════
+//  JAVASCRIPT TOTALMENTE CORRIGIDO
+//  Bugs resolvidos baseados na análise do vídeo
+// ═══════════════════════════════════════════
+
 // ─── STATE ───
 const totalSlides = 6;
-
-// ─── NAVEGAÇÃO ───
 let currentSlide = 1;
 
+// ─── INICIALIZAÇÃO ───
+document.addEventListener('DOMContentLoaded', () => {
+  attachSlideListeners();
+  document.getElementById('legendaText').dispatchEvent(new Event('input'));
+});
+
+// ─── EVENT LISTENERS PARA ATUALIZAÇÃO EM TEMPO REAL ───
+function attachSlideListeners() {
+  // Gancho e subtítulo (Slide 1)
+  document.getElementById('gancho').addEventListener('input', () => {
+    if (currentSlide === 1) updateSlidePreview();
+  });
+  
+  document.getElementById('subtitulo').addEventListener('input', () => {
+    if (currentSlide === 1) updateSlidePreview();
+  });
+  
+  // Nome da marca
+  document.getElementById('brandName').addEventListener('input', (e) => {
+    document.getElementById('previewBrand').textContent = e.target.value || 'Atmavox';
+  });
+  
+  // Textareas dos slides 2-6 (CORREÇÃO PRINCIPAL)
+  document.querySelectorAll('.slide-item textarea').forEach((textarea, index) => {
+    textarea.addEventListener('input', () => {
+      // index 0 = slide 2, index 1 = slide 3, etc.
+      if (currentSlide === index + 2) {
+        updateSlidePreview();
+      }
+    });
+  });
+}
+
+// ─── NAVEGAÇÃO ───
 function prevSlide() { goToSlide(currentSlide - 1); }
 function nextSlide() { goToSlide(currentSlide + 1); }
 
@@ -973,36 +1046,54 @@ function goToSlide(n) {
   currentSlide = n;
   updateSlidePreview();
   
-  // Atualiza dots e numeração
+  // Atualiza dots (CORREÇÃO: dots correspondem aos slides 1-indexed)
   const dots = document.querySelectorAll('.preview-dot');
-  dots.forEach((d,i) => d.classList.toggle('active', i === n));
+  dots.forEach((d,i) => d.classList.toggle('active', i === n - 1));
+  
+  // Atualiza numeração
   document.getElementById('previewNum').textContent =
-    String(n+1).padStart(2,'0') + ' / ' + String(totalSlides).padStart(2,'0');
+    String(n).padStart(2,'0') + ' / ' + String(totalSlides).padStart(2,'0');
   document.getElementById('slideInfo').textContent =
-    'slide ' + (n+1) + ' / ' + totalSlides + ' · trilha problema';
+    'slide ' + n + ' / ' + totalSlides + ' · trilha problema';
 }
 
 function updateSlidePreview() {
+  const title = document.getElementById('previewTitle');
+  const sub = document.getElementById('previewSub');
+  
   if (currentSlide === 1) {
-    // Slide 1: usa gancho e subtítulo
-    const title = document.getElementById('previewTitle');
-    const sub = document.getElementById('previewSub');
+    // Slide 1: gancho e subtítulo
     if (title) title.innerHTML = document.getElementById('gancho').value
-      .replace(/(Estado Cinza|Chama Interna|paralisa|desativada|cinza)/gi, '<em>$1</em>');
+      .replace(/(Estado Cinza|Chama Interna|paralisa|desativada|cinza|tudo|consciente)/gi, '<em>$1</em>');
     if (sub) sub.textContent = document.getElementById('subtitulo').value;
   } else {
-    // Slides 2-6: extrai do textarea no painel
+    // Slides 2-6: pega do textarea correspondente
     const slideItems = document.querySelectorAll('.slide-item');
-    const index = currentSlide - 2;
+    const index = currentSlide - 2; // slide 2 = index 0, slide 3 = index 1, etc.
+    
     if (slideItems[index]) {
       const textarea = slideItems[index].querySelector('textarea');
-      const title = document.getElementById('previewTitle');
-      const sub = document.getElementById('previewSub');
-      if (textarea && sub) {
-        sub.textContent = textarea.value;
-      }
-      if (title) {
-        title.textContent = 'Slide ' + currentSlide;
+      if (textarea && title && sub) {
+        const content = textarea.value;
+        // Divide em linhas
+        const lines = content.split('\n').filter(line => line.trim() !== '');
+        
+        // Primeira linha vai pro título
+        if (lines.length > 0) {
+          title.innerHTML = lines[0].replace(
+            /(Estado Cinza|Chama Interna|paralisa|desativada|energia|ativa|cinza)/gi,
+            '<em>$1</em>'
+          );
+        } else {
+          title.textContent = '';
+        }
+        
+        // Resto vai pro subtítulo
+        if (lines.length > 1) {
+          sub.textContent = lines.slice(1).join('\n');
+        } else {
+          sub.textContent = '';
+        }
       }
     }
   }
@@ -1112,11 +1203,12 @@ function loadTemplate(name) {
   document.getElementById('legendaPreview').textContent = t.legenda;
   document.getElementById('trilhaSelect').value = t.trilha;
   document.getElementById('previewTitle').innerHTML = t.gancho.replace(
-    /(Estado Cinza|Chama Interna|Desperto Frustrado|ativação|paralisa)/gi,
+    /(Estado Cinza|Chama Interna|Desperto Frustrado|ativação|paralisa|autoconhecimento)/gi,
     '<em>$1</em>'
   );
   document.getElementById('previewSub').textContent = t.subtitulo;
   onTrilhaChange();
+  document.getElementById('legendaText').dispatchEvent(new Event('input'));
 }
 
 // ─── AVATAR ───
@@ -1142,12 +1234,20 @@ function addSlide() {
   item.innerHTML = `
     <div class="slide-num">Slide ${slideCount + 1}</div>
     <textarea placeholder="Conteúdo do slide..." rows="3"></textarea>
-    <div class="slide-layout-row">
-      <button class="layout-chip active">Padrão</button>
-      <button class="layout-chip">Citação</button>
-      <button class="layout-chip">Lista</button>
-    </div>`;
+<div class="slide-layout-row">
+  <button class="layout-chip active">Padrão</button>
+  <button class="layout-chip">Citação</button>
+  <button class="layout-chip">Lista</button>
+</div>`;
+
   list.appendChild(item);
+  
+  // Adiciona listener ao novo textarea
+  const textarea = item.querySelector('textarea');
+  textarea.addEventListener('input', () => {
+    if (currentSlide === slideCount + 1) updateSlidePreview();
+  });
+  
   item.querySelectorAll('.layout-chip').forEach(chip => {
     chip.addEventListener('click', function() {
       item.querySelectorAll('.layout-chip').forEach(c => c.classList.remove('active'));
@@ -1166,24 +1266,35 @@ document.querySelectorAll('.slide-item').forEach(item => {
   });
 });
 
-// ─── GENERATE / EXPORT (stubs para integrar com lógica existente) ───
+// ─── GENERATE COM SCROLL E HIGHLIGHT ───
 function generateCarousel() {
   const gancho = document.getElementById('gancho').value;
   document.getElementById('previewTitle').innerHTML = gancho.replace(
-    /(Estado Cinza|Chama Interna|paralisa|desativada|cinza)/gi, '<em>$1</em>'
+    /(Estado Cinza|Chama Interna|paralisa|desativada|cinza|tudo|consciente)/gi, '<em>$1</em>'
   );
   document.getElementById('previewSub').textContent = document.getElementById('subtitulo').value;
   document.getElementById('previewBrand').textContent = document.getElementById('brandName').value || 'Atmavox';
   updateHashtagPreview();
-  // →→ aqui conecta com a lógica de renderização canvas existente no site original
+  
+  // Volta para o slide 1
+  goToSlide(1);
+  
+  // Scroll suave para o topo
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  // Animação de highlight
+  const preview = document.getElementById('slidePreview');
+  preview.classList.remove('highlight');
+  setTimeout(() => {
+    preview.classList.add('highlight');
+    setTimeout(() => preview.classList.remove('highlight'), 1200);
+  }, 300);
 }
 
 function exportAll() {
   alert('Exportação: conecte esta função ao sistema html2canvas existente no site original.');
 }
-
-// ─── LEGENDA CHAR COUNT INIT ───
-document.getElementById('legendaText').dispatchEvent(new Event('input'));
 </script>
+
 </body>
 </html>
